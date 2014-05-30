@@ -7,7 +7,7 @@ Requires SFML version 1.6. Only tested on Ubuntu and Arch Linux.
 
 To build:
 
-   cd build
-   make
+    cd build
+    make
 
-The game is will then be found in build/tetris-game.
+The game can then be found in build/tetris-game.
