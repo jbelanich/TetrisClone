@@ -1,7 +1,7 @@
 Tetris Clone
 ===========
 
-This is a quick Tetris clone I made a couple of years ago.
+This is a quick and dirty Tetris clone I made a couple of years ago.
 
 Requires SFML version 1.6. Only tested on Ubuntu and Arch Linux.
 
