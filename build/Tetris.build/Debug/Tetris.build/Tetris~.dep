@@ -1,8 +1,0 @@
-6617a491d1d27fc8c364fd1da7790991 1bf5292e4d5978860f91da38e35fb72c ffffffffffffffffffffffffffffffff 102 /Users/Josh/Projects/Tetris/build/Debug/Tetris.app
-000000004a25745000000000000000aa 018c6f57953e0381cb7dbb8574c24618 ffffffffffffffffffffffffffffffff 170 /Users/Josh/Projects/Tetris/build/Debug/Tetris.app/Contents/Frameworks/sfml-graphics.framework
-000000004a259ec200000000000000aa ed02e5db24f0c9f52dfd7c0a054f39d9 ffffffffffffffffffffffffffffffff 170 /Users/Josh/Projects/Tetris/build/Debug/Tetris.app/Contents/Frameworks/sfml-window.framework
-000000004a25740300000000000000aa 48d6d8680674b4a4942d63e6af89ed61 ffffffffffffffffffffffffffffffff 170 /Users/Josh/Projects/Tetris/build/Debug/Tetris.app/Contents/Frameworks/sfml-system.framework
-f57572fce2260487e2a6134f4a7b9811 373a8489ce6b9b0e536f4a3b3306038a ffffffffffffffffffffffffffffffff 18664 /Users/Josh/Projects/Tetris/build/Debug/Tetris.app/Contents/MacOS/Tetris
-00000000000000000000000000000000 36289ea61e506d6b0b21af9f505cd83d ffffffffffffffffffffffffffffffff 8 /Users/Josh/Projects/Tetris/build/Debug/Tetris.app/Contents/PkgInfo
-00000000000000000000000000000000 36289ea61e506d6b0b21af9f505cd83d ffffffffffffffffffffffffffffffff 602 /Users/Josh/Projects/Tetris/build/Debug/Tetris.app/Contents/Info.plist
-000000004ba48cbf0000000000027ec0 f57572fce3a7fc48e2a6134f4a36b351 ffffffffffffffffffffffffffffffff 119248 /Users/Josh/Projects/Tetris/build/Tetris.build/Debug/Tetris.build/Objects-normal/i386/main.o
