@@ -37,7 +37,7 @@ void TetrisGame::initGame() {
  */
 void TetrisGame::closeGame() {
 	sf::Font GameOverFont;
-	if(!GameOverFont.LoadFromFile("Arial.ttf", 50))
+	if(!GameOverFont.LoadFromFile("images/Arial.ttf", 50))
 		std::cout << "Error Loading Font";
 	sf::String GameOverMessage("Game Over!", GameOverFont, 30);
 	GameOverMessage.Move(TetrisGrid::WIDTH/2, TetrisGrid::HEIGHT/2);
