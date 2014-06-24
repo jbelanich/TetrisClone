@@ -15,8 +15,8 @@
 void TetrisGame::initGame() {
 	srand(time(NULL));
 	
-	TetrisGrid::Init();
-	TetrisBlock::Init();
+	TetrisGrid::loadAssets();
+	TetrisBlock::loadAssets();
 	
 	Point startPoint(5,0);
 	currentPiece = Piece::randomPiece();
@@ -72,7 +72,7 @@ void TetrisGame::closeGame() {
 void TetrisGame::rotateIfPossible() {
 	currentPiece.rotatePiece();
 	if(grid.hasCollision(currentPiece))
-		currentPiece.reverseRotate();
+		currentPiece.reverseRotatePiece();
 }
 
 /**

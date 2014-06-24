@@ -9,6 +9,11 @@
 
 #include "TetrisGrid.h"
 
+void TetrisGrid::loadAssets() {
+  image.LoadFromFile("images/gridImage.png");
+}
+
+
 sf::Image TetrisGrid::image;
 
 /**

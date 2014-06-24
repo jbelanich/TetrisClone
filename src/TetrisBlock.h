@@ -11,28 +11,30 @@
 #include <SFML/Graphics.hpp>
 #include <map>
 #include "Point.h"
+
 using namespace std;
 
 enum Color {
-	CYAN, RED, GREEN, YELLOW
+  CYAN, RED, GREEN, YELLOW
 };
 
 class TetrisBlock {	
-private:
-	Point position;
-	Color color;
-	int animationState;
+  //The images corresponding to each colored block.
+  static map<Color, sf::Image> colorImages;
+
+  Point position;
+  Color color;
+
 public:
-	static const int BLOCK_SIZE = 20;
-	static map<Color, sf::Image> colorImages;
-	static void Init();
-	
-	void setPosition(Point newPosition) { position = newPosition; }
-	void transform(int a, int b, int c, int d) { position = position.transform(a, b, c, d); }
-	Point getPosition() { return position; }
-	void setColor(Color newColor) { color = newColor; }
-	Color getColor() { return color; }
-	
-	void render(sf::RenderWindow & App);
+  static const int BLOCK_SIZE = 20;
+  static void loadAssets();
+
+  //Render the block to the screen for this App.
+  void render(sf::RenderWindow & App);
+  
+  void setPosition(Point newPosition) { position = newPosition; }
+  Point getPosition() { return position; }
+  void setColor(Color newColor) { color = newColor; }
+  Color getColor() { return color; }
 };
 #endif
