@@ -21,7 +21,7 @@ void DisplayBlock::loadAssets() {
 /**
  * Displays this display block at its position with a tetris piece inside centered.
  */
-void DisplayBlock::render(sf::RenderWindow & window, Piece piece) {
+void DisplayBlock::render(sf::RenderWindow & window, TetrisPiece piece) {
   Point pos;
   pos.setX(position.getX() + (width/2) - 1);
   pos.setY(position.getY() + (height/2));

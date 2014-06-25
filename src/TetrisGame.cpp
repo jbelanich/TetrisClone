@@ -19,9 +19,9 @@ void TetrisGame::initGame() {
   TetrisBlock::loadAssets();
 	
   Point startPoint(5,0);
-  currentPiece = Piece::randomPiece();
+  currentPiece = TetrisPiece::randomPiece();
   currentPiece.setPosition(startPoint);
-  nextPiece = Piece::randomPiece();
+  nextPiece = TetrisPiece::randomPiece();
   nextPiece.setPosition(startPoint);
 	
   running = true;
@@ -111,7 +111,7 @@ void TetrisGame::drop() {
     currentPiece = nextPiece;
     currentPiece.setPosition(startPosition);
 		
-    nextPiece = Piece::randomPiece();
+    nextPiece = TetrisPiece::randomPiece();
     nextPiece.setPosition(startPosition);
 		
     scoreBoard.addScoreForRows(grid.removeFullRows());

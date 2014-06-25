@@ -8,7 +8,7 @@
 #ifndef _TETRISGAME_
 #define _TETRISGAME_
 #include "TetrisGrid.h"
-#include "Piece.h"
+#include "TetrisPiece.h"
 #include "TetrisScore.h"
 #include "TetrisBlock.h"
 #include "DisplayBlock.h"
@@ -18,8 +18,8 @@ class TetrisGame {
 private:
 	
 	TetrisGrid grid;
-	Piece currentPiece;
-	Piece nextPiece;
+	TetrisPiece currentPiece;
+	TetrisPiece nextPiece;
 	TetrisScore scoreBoard;
 	sf::RenderWindow App;
 	float timePerMove;

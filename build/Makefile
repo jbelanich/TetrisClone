@@ -1,7 +1,7 @@
 CC=g++
 CFLAGS= -Wall -c
 LIBS= -lsfml-graphics -lsfml-system -lsfml-window
-OBJ= main.o DisplayBlock.o Piece.o Point.o TetrisBlock.o TetrisGame.o TetrisGrid.o TetrisScore.o
+OBJ= main.o DisplayBlock.o TetrisPiece.o Point.o TetrisBlock.o TetrisGame.o TetrisGrid.o TetrisScore.o
 SRC=../src
 
 all: tetris

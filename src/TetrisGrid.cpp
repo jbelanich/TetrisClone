@@ -27,7 +27,7 @@ void TetrisGrid::loadAssets() {
  * bounds or if it is overlapping with any of the other
  * blocks in the grid.
  */
-bool TetrisGrid::hasCollision(Piece piece) {
+bool TetrisGrid::hasCollision(TetrisPiece piece) {
   return piece.hasCollisionWithBlocks(blocks) || !piece.inBounds(WIDTH,HEIGHT);
 }
 
@@ -35,7 +35,7 @@ bool TetrisGrid::hasCollision(Piece piece) {
  * Adds all of the blocks from the given piece
  * into the grid.
  */
-void TetrisGrid::addBlocksForPiece(Piece piece) {
+void TetrisGrid::addBlocksForPiece(TetrisPiece piece) {
   piece.addSelfToBlocks(blocks);
 }
 

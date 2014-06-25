@@ -12,7 +12,7 @@
 #include <map>
 #include <SFML/Graphics.hpp>
 #include "Point.h"
-#include "Piece.h"
+#include "TetrisPiece.h"
 #include "TetrisBlock.h"
 using namespace std;
 
@@ -27,8 +27,8 @@ public:
   static void loadAssets();
 	
   int removeFullRows();	
-  void addBlocksForPiece(Piece piece);
-  bool hasCollision(Piece piece);
+  void addBlocksForPiece(TetrisPiece piece);
+  bool hasCollision(TetrisPiece piece);
 	
   void render(sf::RenderWindow & window);
 };

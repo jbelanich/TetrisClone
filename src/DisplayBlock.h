@@ -9,7 +9,7 @@
 #define _DisplayBlock_
 
 #include "Point.h"
-#include "Piece.h"
+#include "TetrisPiece.h"
 #include <SFML/Graphics.hpp>
 
 /**
@@ -36,7 +36,7 @@ public:
   Point getPosition() { return position; }
 	
   //rendering
-  void render(sf::RenderWindow & window, Piece piece);
+  void render(sf::RenderWindow & window, TetrisPiece piece);
   void render(sf::RenderWindow & window);
 	
 };
