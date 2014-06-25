@@ -73,7 +73,7 @@ void TetrisGame::closeGame() {
  * Rotates the Tetris Piece if possible.  A Tetris Piece
  * cannot rotate if it will result in a collision while
  * doing so.
-p */
+ */
 void TetrisGame::rotateIfPossible() {
   currentPiece.rotatePiece();
   if(grid.hasCollision(currentPiece))
