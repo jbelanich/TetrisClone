@@ -10,8 +10,10 @@
 #define _PIECE_
 
 #include <SFML/Graphics.hpp>
+
 #include <vector>
 #include <iostream>
+
 #include "Point.h"
 #include "TetrisBlock.h"
 

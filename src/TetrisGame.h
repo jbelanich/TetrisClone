@@ -7,12 +7,15 @@
 
 #ifndef _TETRISGAME_
 #define _TETRISGAME_
+
+#include <SFML/Graphics.hpp>
+
 #include "TetrisGrid.h"
 #include "TetrisPiece.h"
 #include "TetrisScore.h"
 #include "TetrisBlock.h"
 #include "DisplayBlock.h"
-#include <SFML/Graphics.hpp>
+
 
 /**
  * Main game class. Handles the game loop and key game logic.

@@ -10,6 +10,7 @@
 
 #include <SFML/Graphics.hpp>
 #include <map>
+
 #include "Point.h"
 
 using namespace std;

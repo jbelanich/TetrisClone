@@ -11,9 +11,11 @@
 #include <vector>
 #include <map>
 #include <SFML/Graphics.hpp>
+
 #include "Point.h"
 #include "TetrisPiece.h"
 #include "TetrisBlock.h"
+
 using namespace std;
 
 /**
