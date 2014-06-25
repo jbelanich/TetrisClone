@@ -29,7 +29,7 @@ TetrisScore::TetrisScore()
  *	Renders the Tetris Score at its position.
  */
 void TetrisScore::render(sf::RenderWindow & window) {
-  std::stringstream displayData;
+  stringstream displayData;
   displayData << "Level: " << level;
   displayData << "\n" << "Score: " << totalScore;
   displayData << "\n" << "Lines: " << totalLines;

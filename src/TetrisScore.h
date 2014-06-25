@@ -13,6 +13,8 @@
 #include "Point.h"
 #include "DisplayBlock.h"
 
+using namespace std;
+
 class TetrisScore {
   int totalScore;
   int totalLines;
