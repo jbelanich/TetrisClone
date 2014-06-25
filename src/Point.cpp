@@ -49,6 +49,10 @@ Point Point::add(const Point& other) const {
   return returnPoint;
 }
 
+Point Point::negate() const {
+  return Point(-x,-y);
+}
+
 bool Point::equals(const Point & other) const {
   return (other.x == x) && (other.y == y);
 }

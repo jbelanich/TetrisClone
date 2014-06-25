@@ -32,6 +32,7 @@ class TetrisGame {
   //Handles score calculation and rendering.
   TetrisScore scoreBoard;
 
+  //The window
   sf::RenderWindow App;
   
   //how much time until piece drops down a position
@@ -47,6 +48,23 @@ class TetrisGame {
   void fallAllTheWay();
 	
   void testLose();
+
+  void render();
+  void renderGameOver();
+
+  void loadAssets();
+
+  //assets
+  static DisplayBlock nextPieceSpace;
+  sf::Font gameOverFont;
+  sf::String gameOverMessage;
+
+  //constants
+  static const Point up;
+  static const Point down;
+  static const Point right;
+  static const Point left;
+  static const Point startPoint;
 	
 public:
   void initGame();

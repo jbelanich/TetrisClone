@@ -32,10 +32,12 @@ public:
   static const int HEIGHT = 20;
   static void loadAssets();
 	
+  //interactions with TetrisGame
   int removeFullRows();	
   void addBlocksForPiece(TetrisPiece piece);
   bool hasCollision(TetrisPiece piece);
 	
+  //rendering
   void render(sf::RenderWindow & window);
 };
 #endif

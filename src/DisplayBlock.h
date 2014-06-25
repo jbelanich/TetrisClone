@@ -17,20 +17,15 @@
  * tetris piece in the sequence.
  */
 class DisplayBlock {
+  Point position;
   int width;
   int height;
-  Point position;
 
   sf::Shape rectangle();
 public:
-  //accessors
-  void setWidth(int newWidth) { width = newWidth; }
-  int getWidth() { return width; }
-  void setHeight(int newHeight) { height = newHeight; }
-  int getHeight() { return height; }
-  void setPosition(Point newPosition) { position = newPosition; }
-  Point getPosition() { return position; }
-	
+  
+  DisplayBlock(Point pos, int width, int height);
+
   //rendering
   void render(sf::RenderWindow & window, TetrisPiece piece);
   void render(sf::RenderWindow & window);

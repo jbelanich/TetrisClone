@@ -8,7 +8,6 @@
 
 #include "DisplayBlock.h"
 
-
 sf::Shape DisplayBlock::rectangle() {
   return sf::Shape::Rectangle(position.getX() * TetrisBlock::BLOCK_SIZE,
 					     position.getY() * TetrisBlock::BLOCK_SIZE,
@@ -16,6 +15,9 @@ sf::Shape DisplayBlock::rectangle() {
 					     position.getY() * TetrisBlock::BLOCK_SIZE + height * TetrisBlock::BLOCK_SIZE,
 					     sf::Color(88,83,83));
 }
+
+DisplayBlock::DisplayBlock(Point pos, int width, int height) 
+  : position(pos), width(width), height(height) {}
 
 /**
  * Displays this display block at its position with a tetris piece inside centered.

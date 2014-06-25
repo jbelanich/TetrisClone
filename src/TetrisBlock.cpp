@@ -10,6 +10,9 @@
 
 map<Color, sf::Image> TetrisBlock::colorImages;
 
+TetrisBlock::TetrisBlock(Point position, Color color) 
+  : position(position), color(color) {}
+
 /**
  * Loads all of the images for the possible block colors.
  */

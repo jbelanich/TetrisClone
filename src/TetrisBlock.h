@@ -33,6 +33,9 @@ class TetrisBlock {
   Color color;
 
 public:
+  TetrisBlock(Point position, Color color);
+  
+  //constants
   static const int BLOCK_SIZE = 20;
   static void loadAssets();
 
@@ -42,7 +45,5 @@ public:
   //accessors
   void setPosition(Point newPosition) { position = newPosition; }
   Point getPosition() const { return position; }
-  void setColor(Color newColor) { color = newColor; }
-  Color getColor() const { return color; }
 };
 #endif

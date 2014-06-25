@@ -86,8 +86,5 @@ public:
   //accessor methods
   Point getPosition() { return position; }
   void setPosition(Point newPosition) { position = newPosition; }
-  void setRotationStates(int states) { rotationStates = states; }
-  int getRotationStates() { return rotationStates; }
-	
 };
 #endif

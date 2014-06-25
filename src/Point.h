@@ -31,6 +31,7 @@ public:
   Point transform(int a, int b, int c, int d) const;
   Point rotateClockwise() const;
   Point rotateCounterClockwise() const;
+  Point negate() const;
   Point minus(const Point& other) const;
   Point add(const Point& other) const;
 

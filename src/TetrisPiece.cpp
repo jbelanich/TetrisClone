@@ -19,7 +19,7 @@ TetrisPiece TetrisPiece::square() {
   returnPiece.addBlock(Point(1,0));
   returnPiece.addBlock(Point(1,1));
   returnPiece.addBlock(Point(0,1));
-  returnPiece.setRotationStates(0);
+  returnPiece.rotationStates = 0;
   return returnPiece;
 }
 
@@ -31,7 +31,7 @@ TetrisPiece TetrisPiece::lblockRight() {
   returnPiece.addBlock(Point(0,-1));
   returnPiece.addBlock(Point(0,1));
   returnPiece.addBlock(Point(1,1));
-  returnPiece.setRotationStates(4);
+  returnPiece.rotationStates = 4;
   return returnPiece;
 }
 
@@ -43,7 +43,7 @@ TetrisPiece TetrisPiece::lblockLeft() {
   returnPiece.addBlock(Point(0,-1));
   returnPiece.addBlock(Point(0,1));
   returnPiece.addBlock(Point(-1,1));
-  returnPiece.setRotationStates(4);
+  returnPiece.rotationStates = 4;
   return returnPiece;
 }
 
@@ -55,7 +55,7 @@ TetrisPiece TetrisPiece::stairblockRight() {
   returnPiece.addBlock(Point(1,0));
   returnPiece.addBlock(Point(-1,1));
   returnPiece.addBlock(Point(0,1));
-  returnPiece.setRotationStates(2);
+  returnPiece.rotationStates = 2;
   return returnPiece;
 }
 
@@ -67,7 +67,7 @@ TetrisPiece TetrisPiece::stairblockLeft() {
   returnPiece.addBlock(Point(0,1));
   returnPiece.addBlock(Point(1,1));
   returnPiece.addBlock(Point(-1,0));
-  returnPiece.setRotationStates(2);
+  returnPiece.rotationStates = 2;
   return returnPiece;
 }
 
@@ -79,7 +79,7 @@ TetrisPiece TetrisPiece::longBlock() {
   returnPiece.addBlock(Point(0,-1));
   returnPiece.addBlock(Point(0,-2));
   returnPiece.addBlock(Point(0,1));
-  returnPiece.setRotationStates(2);
+  returnPiece.rotationStates = 2;
   returnPiece.rotatePiece();
   return returnPiece;
 }
@@ -92,7 +92,7 @@ TetrisPiece TetrisPiece::threeBlock() {
   returnPiece.addBlock(Point(0,-1));
   returnPiece.addBlock(Point(1,0));
   returnPiece.addBlock(Point(-1,0));
-  returnPiece.setRotationStates(4);
+  returnPiece.rotationStates = 4;
   return returnPiece;
 }
 
@@ -141,16 +141,13 @@ void TetrisPiece::addBlock(Point location) {
  * Rotate the piece in the provided direction.
  */
 void TetrisPiece::rotate(Direction direction) {
-  vector<Point> newPositions;
   vector<Point>::iterator iter;
   for(iter = blockLocations.begin(); iter != blockLocations.end(); ++iter) {
     if(direction == CLOCKWISE)
-      newPositions.push_back(iter->rotateClockwise());
+      *iter = iter->rotateClockwise();
     else 
-      newPositions.push_back(iter->rotateCounterClockwise());
+      *iter = iter->rotateCounterClockwise();
   }
-
-  blockLocations = newPositions;
 }
 
 /**
@@ -234,17 +231,17 @@ bool TetrisPiece::hasCollisionWithBlocks(const vector<TetrisBlock>& blocks) {
 void TetrisPiece::addSelfToBlocks(vector<TetrisBlock>& blocks) {
   vector<Point>::iterator locationIter;
   for(locationIter = blockLocations.begin(); locationIter != blockLocations.end(); ++locationIter) {
-    TetrisBlock tempBlock;
-    tempBlock.setPosition(getGridLocation(*locationIter));
-    tempBlock.setColor(color);
+    TetrisBlock tempBlock(getGridLocation(*locationIter), color);
+    //    tempBlock.setPosition(getGridLocation(*locationIter));
+    //    tempBlock.setColor(color);
     blocks.push_back(tempBlock);
   }
 	
   //add implicit center piece.
-  TetrisBlock centerTetrisPiece;
-  centerTetrisPiece.setPosition(position);
-  centerTetrisPiece.setColor(color);
-  blocks.push_back(centerTetrisPiece);
+  TetrisBlock centerTetrisBlock(position, color);
+  //  centerTetrisPiece.setPosition(position);
+  //  centerTetrisPiece.setColor(color);
+  blocks.push_back(centerTetrisBlock);
 }
 
 /**
@@ -305,8 +302,8 @@ void TetrisPiece::render(sf::RenderWindow & window) {
  * location.
  */
 void TetrisPiece::renderBlock(sf::RenderWindow& window, Point blockLocation) {
-  TetrisBlock block;
-  block.setPosition(getGridLocation(blockLocation));
-  block.setColor(color);
+  TetrisBlock block(getGridLocation(blockLocation), color);
+  //  block.setPosition(getGridLocation(blockLocation));
+  //  block.setColor(color);
   block.render(window);
 }

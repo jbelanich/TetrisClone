@@ -17,25 +17,37 @@ class TetrisScore {
   int totalScore;
   int totalLines;
   int level;
+
+  //rows we have cleared in this level
   int rowsTowardLevel;
+  
+  //where to render the score
   Point position;
 
+  //assets
+  static sf::String scoreDisplay;
+  static sf::Font scoreFont;
+  static DisplayBlock displayBlock;
+
+  //constants
   static const int SCORE_FACTOR = 100;
+  static const int ROWS_PER_LEVEL = 10;
+  static const float TIME_FACTOR = 1.5f;
 public:
   TetrisScore();
-	
-  int getTotalScore() { return totalScore; }
-  void setTotalScore(int newTotalScore) { totalScore = newTotalScore; }
+
+  static void loadAssets();
+
+  //accessors
   Point getPosition() { return position; }
-  void setPosition(Point newPosition) { position = newPosition; }
-  int getTotalLines() { return totalLines; }
-  void setTotalLines(int newTotalLines) { totalLines = newTotalLines; }
-	
+  void setPosition(Point pos) { position = pos; }
+
+  //interactions with TetrisGame
   void addScoreForRows(int numberOfRows);
-	
-  void render(sf::RenderWindow & window);
-	
   float getTimePerMove();
+	
+  //rendering
+  void render(sf::RenderWindow & window);	
 
 };
 #endif

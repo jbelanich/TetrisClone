@@ -8,6 +8,24 @@
 
 #include "TetrisGame.h"
 
+DisplayBlock TetrisGame::nextPieceSpace(Point(TetrisGrid::WIDTH + 1, 0), 8, 5);
+
+//constants
+const Point TetrisGame::startPoint(5,0);
+const Point TetrisGame::up(0,-1);
+const Point TetrisGame::down(0,1);
+const Point TetrisGame::right(1,0);
+const Point TetrisGame::left(-1,0);
+
+void TetrisGame::loadAssets() {
+  if(!gameOverFont.LoadFromFile("images/Arial.ttf", 50))
+    std::cout << "Error Loading Font";
+
+  gameOverMessage = sf::String("Game Over!", gameOverFont, 30);
+
+  gameOverMessage.Move(TetrisGrid::WIDTH/2, TetrisGrid::HEIGHT/2);
+}
+
 /**
  * Initializes the game by loading the appropriate
  * images and Tetris Pieces.
@@ -16,11 +34,12 @@ void TetrisGame::initGame() {
   App.Create(sf::VideoMode(380,400), "SFML Graphics");
 
   srand(time(NULL));
-	
+
+  TetrisGame::loadAssets();	
   TetrisGrid::loadAssets();
   TetrisBlock::loadAssets();
+  TetrisScore::loadAssets();
 
-  Point startPoint(5,0);
   currentPiece = TetrisPiece::randomPiece();
   currentPiece.setPosition(startPoint);
   nextPiece = TetrisPiece::randomPiece();
@@ -37,15 +56,6 @@ void TetrisGame::initGame() {
  * to exit the game.
  */
 void TetrisGame::closeGame() {
-  sf::Font GameOverFont;
-
-  if(!GameOverFont.LoadFromFile("images/Arial.ttf", 50))
-    std::cout << "Error Loading Font";
-
-  sf::String GameOverMessage("Game Over!", GameOverFont, 30);
-
-  GameOverMessage.Move(TetrisGrid::WIDTH/2, TetrisGrid::HEIGHT/2);
-	
   while(App.IsOpened()) {
     sf::Event Event; 
 		
@@ -54,14 +64,7 @@ void TetrisGame::closeGame() {
 	App.Close();
     }
     
-    App.Clear();
-			
-    grid.render(App);
-    currentPiece.render(App);
-    App.Draw(GameOverMessage);
-    scoreBoard.render(App);
-			
-    App.Display();
+    renderGameOver();
   }
 	
 }
@@ -70,7 +73,7 @@ void TetrisGame::closeGame() {
  * Rotates the Tetris Piece if possible.  A Tetris Piece
  * cannot rotate if it will result in a collision while
  * doing so.
- */
+p */
 void TetrisGame::rotateIfPossible() {
   currentPiece.rotatePiece();
   if(grid.hasCollision(currentPiece))
@@ -84,7 +87,7 @@ void TetrisGame::rotateIfPossible() {
 void TetrisGame::moveIfPossible(Point direction) {
   currentPiece.move(direction);
   if(grid.hasCollision(currentPiece)) {
-    currentPiece.setPosition(currentPiece.getPosition().minus(direction));
+    currentPiece.move(direction.negate());
   }
 }
 
@@ -96,24 +99,23 @@ void TetrisGame::moveIfPossible(Point direction) {
  * dropping piece.
  */
 void TetrisGame::drop() {
-  Point down(0,1);
-	
   currentPiece.move(down);
 	
+  //we have a collision, move piece back up one and
+  //add the piece's blocks to the grid.
   if(grid.hasCollision(currentPiece)) {
-    currentPiece.setPosition(currentPiece.getPosition().minus(down));
-		
-    Point startPosition(5,0);
+    currentPiece.move(up);
 		
     grid.addBlocksForPiece(currentPiece);
 		
     currentPiece = nextPiece;
-    currentPiece.setPosition(startPosition);
+    currentPiece.setPosition(startPoint);
 		
     nextPiece = TetrisPiece::randomPiece();
-    nextPiece.setPosition(startPosition);
-		
+    nextPiece.setPosition(startPoint);
+	
     scoreBoard.addScoreForRows(grid.removeFullRows());
+
     testLose();
   }
 }
@@ -123,9 +125,6 @@ void TetrisGame::drop() {
  * position.
  */
 void TetrisGame::fallAllTheWay() {
-  Point down(0,1);
-  Point up(0,-1);
-	
   while(!grid.hasCollision(currentPiece)) {
     currentPiece.move(down);
   }
@@ -145,14 +144,9 @@ void TetrisGame::testLose() {
 }
 
 /**
- *	Displays the next block to the right of the Tetris Grid.
+ * Displays the next block to the right of the Tetris Grid.
  */
 void TetrisGame::renderNextBlock() {
-  Point displayPosition(TetrisGrid::WIDTH + 1, 0);
-  DisplayBlock nextPieceSpace;
-  nextPieceSpace.setWidth(8);
-  nextPieceSpace.setHeight(5);
-  nextPieceSpace.setPosition(displayPosition);
   nextPieceSpace.render(App, nextPiece);
 }
 
@@ -165,12 +159,6 @@ int TetrisGame::gameLoop() {
   float timeElapsed = 0.0f;
   float timeCounter = 0.0f;
 	
-  Point right(1,0);
-  Point down(0,1);
-  Point up(0,-1);
-  Point left(-1,0);
-		
-		
   while (running && App.IsOpened()) {
     timeElapsed = App.GetFrameTime();
     timeCounter += timeElapsed;
@@ -180,6 +168,8 @@ int TetrisGame::gameLoop() {
     while (App.GetEvent(Event)) {
       if (Event.Type == sf::Event::Closed)
 	App.Close();
+
+      //move block
       if((Event.Type == sf::Event::KeyPressed)) {
 	if(Event.Key.Code == sf::Key::Up)
 	  rotateIfPossible();
@@ -193,22 +183,38 @@ int TetrisGame::gameLoop() {
 	  fallAllTheWay();
       }
     }
-			
+	       
+    //reset time counter if necessary
     if(timeCounter > scoreBoard.getTimePerMove()) {
       timeCounter = 0.0f;
       drop();
     }
 			
-    App.Clear();
-			
-    renderNextBlock();
-    grid.render(App);
-    currentPiece.render(App);
-    scoreBoard.render(App);
-			
-    App.Display();
+    render();
   }
 		
   return EXIT_SUCCESS;
+}
+
+void TetrisGame::render() {
+  App.Clear();
+  
+  renderNextBlock();
+  grid.render(App);
+  currentPiece.render(App);
+  scoreBoard.render(App);
+  
+  App.Display();
+}
+
+void TetrisGame::renderGameOver() {
+ App.Clear();
+			
+ grid.render(App);
+ currentPiece.render(App);
+ App.Draw(gameOverMessage);
+ scoreBoard.render(App);
+			
+ App.Display();  
 }
 
