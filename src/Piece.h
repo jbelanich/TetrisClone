@@ -17,15 +17,24 @@
 
 using namespace std;
 
+/**
+ * A TetrisPiece is a collection of TetrisBlocks arranged in the appropriate pattern. Internally,
+ * this is represented by a vector of Positions indicating where the relevant blocks are located.
+ * 
+ * Note that for every TetrisPiece there is an *implicit block* at point (0,0).
+ */
+
 class Piece {
 
+  //Location of the blocks that make up this piece. Locations
+  //are *relative* to the position of the piece.
   vector <Point> blockLocations;
+
+  //Position of piece
   Point position;
 
-  /*
-   * The number of rotation states this piece has. For example, a square has 0 because
-   * of its symmetry, and a l-block has 4, because of its asymmetry.
-   */
+  //The number of rotation states this piece has. For example, a square has 0 because
+  //of its symmetry, and a l-block has 4, because of its asymmetry.
   int rotationStates;
 
   //Current rotation state of this piece.
@@ -38,6 +47,8 @@ class Piece {
   void renderBlock(sf::RenderWindow & window, Point blockLocation);
   void rotate(int direction);
   bool hasBlockAtLocation(Point location);
+  Point getGridLocation(Point blockLocation);
+  void addBlock(Point location);
 	
 public:
   Piece();
@@ -51,22 +62,20 @@ public:
   static Piece longBlock();
   static Piece threeBlock();
   static Piece randomPiece();
-	
+  
+  //coordinate translations.
   vector <TetrisBlock> getGridBlocks();
-	
-  Point getGridLocation(Point blockLocation);
-	
+  vector <Point> getGridLocations();
+
+  //transformations
   void rotatePiece();
   void reverseRotatePiece();
-  void render(sf::RenderWindow & window);
-  void addBlock(Point location);
   void move(Point direction);
+
+  //rendering
+  void render(sf::RenderWindow & window);
 	
-  vector <Point> getGridLocations();
-	
-  /**
-   * Accessor Methods
-   */
+  //accessor methods
   Point getPosition() { return position; }
   void setPosition(Point newPosition) { position = newPosition; }
   void setRotationStates(int states) { rotationStates = states; }

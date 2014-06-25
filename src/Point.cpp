@@ -74,3 +74,7 @@ void Point::setX(int newX) {
 void Point::setY(int newY) {
 	y = newY;
 }
+
+Point Point::zero() {
+  return Point(0,0);
+}

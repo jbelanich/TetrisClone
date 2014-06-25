@@ -11,6 +11,10 @@
 
 #include "Piece.h"
 
+Piece::Piece() : currentState(0) {
+  color = (Color)(rand()%4);
+}
+
 /**
  *	Generates a square block and returns it.
  */
@@ -130,10 +134,6 @@ Piece Piece::randomPiece() {
   return returnPiece;
 }
 
-Piece::Piece() : currentState(0) {
-  color = (Color)(rand()%4);
-}
-
 /**
  *	Add a block at the specified location.
  */
@@ -143,17 +143,18 @@ void Piece::addBlock(Point location) {
 }
 
 /**
- *	Rotate the block in a certain direction.
+ *	Rotate the piece in a certain direction.
  *	1 - Means rotate clockwise
  *	Any other number means counter-clockwise
  */
 void Piece::rotate(int direction) {
-  vector <Point> newPositions;
-  for(int i = 0; i < blockLocations.size(); i++) {
+  vector<Point> newPositions;
+  vector<Point>::iterator iter;
+  for(iter = blockLocations.begin(); iter != blockLocations.end(); ++iter) {
     if(direction == 1)
-      newPositions.push_back(blockLocations[i].rotateClockwise());
+      newPositions.push_back(iter->rotateClockwise());
     else 
-      newPositions.push_back(blockLocations[i].rotateCounterClockwise());
+      newPositions.push_back(iter->rotateCounterClockwise());
   }
 
   blockLocations = newPositions;
@@ -161,17 +162,20 @@ void Piece::rotate(int direction) {
 
 /**
  *	Rotates the piece through its possible rotation states clockwise.  When it reaches
- *	the end of its possible rotation states, the block returns to its original
+ *	the end of its possible rotation states, the piece returns to its original
  *	rotation state.
  */
 void Piece::rotatePiece() {
   currentState++;
-  if(!(currentState < rotationStates)) {
+  if(currentState >= rotationStates) {
     currentState = 0;
+
+    //rotate all the way back to original position.
     for(int i = 0; i < rotationStates-1; i++) {
       rotate(0);
     }
   } else {
+    //just rotate normally
     rotate(1);
   }
 }
@@ -183,12 +187,15 @@ void Piece::rotatePiece() {
  */
 void Piece::reverseRotatePiece() {
   currentState--;
-  if((currentState < 0)) {
+  if(currentState < 0) {
     currentState = 0;
+
+    //rotate all the way to original position.
     for(int i = 0; i < rotationStates-1; i++) {
       rotate(1);
     }
   } else {
+    //just rotate normally
     rotate(0);
   }
 }
@@ -231,8 +238,7 @@ vector <Point> Piece::getGridLocations() {
  *	Returns the grid location for a specific relative location.
  */
 Point Piece::getGridLocation(Point blockLocation) {
-  Point temp(blockLocation);
-  return temp.add(position);
+  return blockLocation.add(position);
 }
 
 /**
@@ -243,8 +249,8 @@ void Piece::render(sf::RenderWindow & window) {
   for(int i = 0; i < blockLocations.size(); i++) {
     renderBlock(window, blockLocations[i]);
   }
-  Point point1(0,0);
-  renderBlock(window, point1);
+
+  renderBlock(window, Point::zero());
 }
 
 /**
@@ -252,7 +258,7 @@ void Piece::render(sf::RenderWindow & window) {
  *	It first converts the passed location into a grid
  *	location.
  */
-void Piece::renderBlock(sf::RenderWindow & window, Point blockLocation) {
+void Piece::renderBlock(sf::RenderWindow& window, Point blockLocation) {
   TetrisBlock block;
   block.setPosition(getGridLocation(blockLocation));
   block.setColor(color);
@@ -265,7 +271,7 @@ void Piece::renderBlock(sf::RenderWindow & window, Point blockLocation) {
  *	their relative positions.  This is used for adding the
  *	blocks into the grid.
  */
-vector <TetrisBlock> Piece::getGridBlocks() {
+vector<TetrisBlock> Piece::getGridBlocks() {
   vector <TetrisBlock> returnBlocks;
   for(int i = 0; i < blockLocations.size(); i++) {
     TetrisBlock tempBlock;

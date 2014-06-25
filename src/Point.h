@@ -31,5 +31,8 @@ public:
   Point add(const Point& other) const;
 
   bool equals(const Point& other) const;
+
+  //some generation methods
+  static Point zero();
 };
 #endif
