@@ -232,15 +232,11 @@ void TetrisPiece::addSelfToBlocks(vector<TetrisBlock>& blocks) {
   vector<Point>::iterator locationIter;
   for(locationIter = blockLocations.begin(); locationIter != blockLocations.end(); ++locationIter) {
     TetrisBlock tempBlock(getGridLocation(*locationIter), color);
-    //    tempBlock.setPosition(getGridLocation(*locationIter));
-    //    tempBlock.setColor(color);
     blocks.push_back(tempBlock);
   }
 	
   //add implicit center piece.
   TetrisBlock centerTetrisBlock(position, color);
-  //  centerTetrisPiece.setPosition(position);
-  //  centerTetrisPiece.setColor(color);
   blocks.push_back(centerTetrisBlock);
 }
 
@@ -303,7 +299,5 @@ void TetrisPiece::render(sf::RenderWindow & window) {
  */
 void TetrisPiece::renderBlock(sf::RenderWindow& window, Point blockLocation) {
   TetrisBlock block(getGridLocation(blockLocation), color);
-  //  block.setPosition(getGridLocation(blockLocation));
-  //  block.setColor(color);
   block.render(window);
 }
