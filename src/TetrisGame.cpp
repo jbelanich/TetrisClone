@@ -13,6 +13,8 @@
  * images and Tetris Pieces.
  */
 void TetrisGame::initGame() {
+  App.Create(sf::VideoMode(380,400), "SFML Graphics");
+
   srand(time(NULL));
 	
   TetrisGrid::loadAssets();
@@ -47,13 +49,11 @@ void TetrisGame::closeGame() {
   while(App.IsOpened()) {
     sf::Event Event; 
 		
-    while (App.GetEvent(Event))
-      {
-		
-	if (Event.Type == sf::Event::Closed)
-	  App.Close();
-      }
-			
+    while (App.GetEvent(Event)) {
+      if (Event.Type == sf::Event::Closed)
+	App.Close();
+    }
+    
     App.Clear();
 			
     grid.render(App);
@@ -162,10 +162,6 @@ void TetrisGame::renderNextBlock() {
  * Tetris Piece down.  This gets faseter as move rows are cleared.
  */
 int TetrisGame::gameLoop() {
-
-  App.Create(sf::VideoMode(380,400), "SFML Graphics");
-	
-  initGame(); 
   float timeElapsed = 0.0f;
   float timeCounter = 0.0f;
 	
@@ -175,45 +171,43 @@ int TetrisGame::gameLoop() {
   Point left(-1,0);
 		
 		
-  while (running && App.IsOpened())
-    {
-      timeElapsed = App.GetFrameTime();
-      timeCounter += timeElapsed;
+  while (running && App.IsOpened()) {
+    timeElapsed = App.GetFrameTime();
+    timeCounter += timeElapsed;
 			
-      sf::Event Event;
+    sf::Event Event;
 
-      while (App.GetEvent(Event))
-	{
-	  if (Event.Type == sf::Event::Closed)
-	    App.Close();
-	  if((Event.Type == sf::Event::KeyPressed)) {
-	    if(Event.Key.Code == sf::Key::Up)
-	      rotateIfPossible();
-	    if(Event.Key.Code == sf::Key::Right)
-	      moveIfPossible(right);
-	    if(Event.Key.Code == sf::Key::Left)
-	      moveIfPossible(left);
-	    if(Event.Key.Code == sf::Key::Down)
-	      drop();
-	    if(Event.Key.Code == sf::Key::Space)
-	      fallAllTheWay();
-	  }
-	}
-			
-      if(timeCounter > scoreBoard.getTimePerMove()) {
-	timeCounter = 0.0f;
-	drop();
+    while (App.GetEvent(Event)) {
+      if (Event.Type == sf::Event::Closed)
+	App.Close();
+      if((Event.Type == sf::Event::KeyPressed)) {
+	if(Event.Key.Code == sf::Key::Up)
+	  rotateIfPossible();
+	if(Event.Key.Code == sf::Key::Right)
+	  moveIfPossible(right);
+	if(Event.Key.Code == sf::Key::Left)
+	  moveIfPossible(left);
+	if(Event.Key.Code == sf::Key::Down)
+	  drop();
+	if(Event.Key.Code == sf::Key::Space)
+	  fallAllTheWay();
       }
-			
-      App.Clear();
-			
-      renderNextBlock();
-      grid.render(App);
-      currentPiece.render(App);
-      scoreBoard.render(App);
-			
-      App.Display();
     }
+			
+    if(timeCounter > scoreBoard.getTimePerMove()) {
+      timeCounter = 0.0f;
+      drop();
+    }
+			
+    App.Clear();
+			
+    renderNextBlock();
+    grid.render(App);
+    currentPiece.render(App);
+    scoreBoard.render(App);
+			
+    App.Display();
+  }
 		
   return EXIT_SUCCESS;
 }

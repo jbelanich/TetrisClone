@@ -197,8 +197,9 @@ void TetrisPiece::reverseRotatePiece() {
  * Returns true if the piece has a block at the specified location.
  */
 bool TetrisPiece::hasBlockAtLocation(Point location) {
-  for(int i = 0; i<blockLocations.size(); i++) {
-    if(location.equals(blockLocations[i]))
+  vector<Point>::iterator locationIter;
+  for(locationIter = blockLocations.begin(); locationIter != blockLocations.end(); ++locationIter) {
+    if(location.equals(*locationIter))
       return true;
   }
   return false;
@@ -289,8 +290,9 @@ Point TetrisPiece::getGridLocation(Point blockLocation) {
  * It renders each block in its specific grid location.
  */
 void TetrisPiece::render(sf::RenderWindow & window) {
-  for(int i = 0; i < blockLocations.size(); i++) {
-    renderBlock(window, blockLocations[i]);
+  vector<Point>::iterator locationIter;
+  for(locationIter = blockLocations.begin(); locationIter != blockLocations.end(); ++locationIter) {
+    renderBlock(window, *locationIter);
   }
 
   //render implicit block

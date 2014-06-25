@@ -24,7 +24,6 @@ class TetrisScore {
 public:
   TetrisScore();
 	
-	
   int getTotalScore() { return totalScore; }
   void setTotalScore(int newTotalScore) { totalScore = newTotalScore; }
   Point getPosition() { return position; }

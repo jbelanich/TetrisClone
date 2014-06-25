@@ -18,6 +18,13 @@ enum Color {
   CYAN, RED, GREEN, YELLOW
 };
 
+/**
+ * A TetrisBlock is a component of a TetrisPiece. That is,
+ * a TetrisPiece is made up of many TetrisBlocks arranged
+ * in the proper shape. TetrisBlocks also live on a TetrisGrid
+ * when a piece is added to the grid when it falls as far as it
+ * can.
+ */
 class TetrisBlock {	
   //The images corresponding to each colored block.
   static map<Color, sf::Image> colorImages;
@@ -31,7 +38,8 @@ public:
 
   //Render the block to the screen for this App.
   void render(sf::RenderWindow & App);
-  
+
+  //accessors
   void setPosition(Point newPosition) { position = newPosition; }
   Point getPosition() const { return position; }
   void setColor(Color newColor) { color = newColor; }

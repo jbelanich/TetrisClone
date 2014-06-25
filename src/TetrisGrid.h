@@ -16,6 +16,12 @@
 #include "TetrisBlock.h"
 using namespace std;
 
+/**
+ * TetrisGrid handles the play grid. It keeps track of the blocks that have
+ * been inserted in the grid when a piece falls as far as it can. It can
+ * check for completed rows and removes them accordingly. Handles collision
+ * detection between falling TetrisPieces and the blocks in the grid.
+ */
 class TetrisGrid {
   vector <TetrisBlock> blocks;
   

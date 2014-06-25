@@ -9,39 +9,37 @@
 #include "TetrisScore.h"
 
 
-TetrisScore::TetrisScore() {
-	position.setX(0);
-	position.setY(0);
-	totalScore = 0;
-	level = 1;
-}
+TetrisScore::TetrisScore() 
+  : totalScore(0), totalLines(0), level(1), rowsTowardLevel(0), position()
+ {}
 
 /**
  *	Renders the Tetris Score at its position.
  */
 void TetrisScore::render(sf::RenderWindow & window) {
-	DisplayBlock block;
-	Point pos(11, 7);
+  DisplayBlock block;
+  Point pos(11, 7);
 	
-	block.setWidth(8);
-	block.setHeight(8);
-	block.setPosition(pos);
+  block.setWidth(8);
+  block.setHeight(8);
+  block.setPosition(pos);
 	
-	std::stringstream displayData;
-	displayData << "Level: " << level;
-	displayData << "\n" << "Score: " << totalScore;
-	displayData << "\n" << "Lines: " << totalLines;
+  std::stringstream displayData;
+  displayData << "Level: " << level;
+  displayData << "\n" << "Score: " << totalScore;
+  displayData << "\n" << "Lines: " << totalLines;
 	
-	sf::Font scoreFont;
-	scoreFont.LoadFromFile("images/Arial.ttf");
-	sf::String scoreDisplay;
-	scoreDisplay.SetFont(scoreFont);
-	scoreDisplay.SetText(displayData.str());
-	scoreDisplay.SetSize(20);
-	scoreDisplay.SetPosition(12*20, 8*20);
+  sf::Font scoreFont;
+  scoreFont.LoadFromFile("images/Arial.ttf");
+
+  sf::String scoreDisplay;
+  scoreDisplay.SetFont(scoreFont);
+  scoreDisplay.SetText(displayData.str());
+  scoreDisplay.SetSize(20);
+  scoreDisplay.SetPosition(12*20, 8*20);
 	
-	block.render(window);
-	window.Draw(scoreDisplay);
+  block.render(window);
+  window.Draw(scoreDisplay);
 }
 
 /**
@@ -50,13 +48,13 @@ void TetrisScore::render(sf::RenderWindow & window) {
  *	cleared rows.
  */
 void TetrisScore::addScoreForRows(int numberOfRows) {
-	totalScore += (numberOfRows * numberOfRows * SCORE_FACTOR);
-	totalLines += numberOfRows;
-	rowsTowardLevel += numberOfRows;
-	if(rowsTowardLevel >= 10) {
-		rowsTowardLevel = 0;
-		level++;
-	}
+  totalScore += (numberOfRows * numberOfRows * SCORE_FACTOR);
+  totalLines += numberOfRows;
+  rowsTowardLevel += numberOfRows;
+  if(rowsTowardLevel >= 10) {
+    rowsTowardLevel = 0;
+    level++;
+  }
 }
 
 /**
@@ -64,9 +62,9 @@ void TetrisScore::addScoreForRows(int numberOfRows) {
  *	This varies with the level.
  */
 float TetrisScore::getTimePerMove() {
-	float startTime = 1.0f;
-	for(int i = 0; i < level; i++) {
-		startTime /= 1.50f;
-	}
-	return startTime;
+  float startTime = 1.0f;
+  for(int i = 0; i < level; i++) {
+    startTime /= 1.50f;
+  }
+  return startTime;
 }

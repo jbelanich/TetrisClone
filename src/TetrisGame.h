@@ -49,10 +49,8 @@ class TetrisGame {
   void testLose();
 	
 public:
-	
   void initGame();
   void closeGame();
   int gameLoop();
-	
 };
 #endif
