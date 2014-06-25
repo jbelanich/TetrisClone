@@ -22,29 +22,31 @@ void TetrisGrid::loadAssets() {
 }
 
 /**
- *	Checks if the piece is colliding with anything on
- *	the grid.  A collision occurs if the piece is out of
- *	bounds or if it is overlapping with any of the other
- *	blocks in the grid.
+ * Checks if the piece is colliding with anything on
+ * the grid.  A collision occurs if the piece is out of
+ * bounds or if it is overlapping with any of the other
+ * blocks in the grid.
  */
 bool TetrisGrid::hasCollision(Piece piece) {
   return piece.hasCollisionWithBlocks(blocks) || !piece.inBounds(WIDTH,HEIGHT);
 }
 
 /**
- *	Adds all of the blocks from the given piece
- *	into the grid.
+ * Adds all of the blocks from the given piece
+ * into the grid.
  */
 void TetrisGrid::addBlocksForPiece(Piece piece) {
   piece.addSelfToBlocks(blocks);
 }
 
 /**
- *	Renders the whole grid onto the screen.  It first renders
- *	the background then renders each individual block.
+ * Renders the whole grid onto the screen.  It first renders
+ * the background then renders each individual block.
  */
 void TetrisGrid::render(sf::RenderWindow & window) {
   window.Draw(background);
+  
+  //draw blocks
   vector<TetrisBlock>::iterator iter;
   for(iter = blocks.begin(); iter != blocks.end(); ++iter) {
     iter->render(window);
@@ -52,10 +54,10 @@ void TetrisGrid::render(sf::RenderWindow & window) {
 }
 
 /**
- *	Removes the full rows from the Tetris Grid.  This method
- *	then returns how many rows were removed.  After removing
- *	the rows it then drops down all the rows above the removed
- *	rows.
+ * Removes the full rows from the Tetris Grid.  This method
+ * then returns how many rows were removed.  After removing
+ * the rows it then drops down all the rows above the removed
+ * rows.
  */
 int TetrisGrid::removeFullRows() {
   //will return this value

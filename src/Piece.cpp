@@ -3,10 +3,6 @@
  *  Tetris
  *
  *  Created by Joshua Belanich.
- *
- *	This class represents a Tetris Piece that moves and rotates
- *	on a Tetris Grid.
- *
  */
 
 #include "Piece.h"
