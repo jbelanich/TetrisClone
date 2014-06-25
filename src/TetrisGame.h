@@ -14,30 +14,45 @@
 #include "DisplayBlock.h"
 #include <SFML/Graphics.hpp>
 
+/**
+ * Main game class. Handles the game loop and key game logic.
+ *
+ */
 class TetrisGame {
-private:
+  
+  //Piece that is currently dropping.
+  TetrisPiece currentPiece;
+
+  //Piece that will drop next.
+  TetrisPiece nextPiece;
+  
+  //Game grid.
+  TetrisGrid grid;
+
+  //Handles score calculation and rendering.
+  TetrisScore scoreBoard;
+
+  sf::RenderWindow App;
+  
+  //how much time until piece drops down a position
+  float timePerMove;
+
+  bool running;
 	
-	TetrisGrid grid;
-	TetrisPiece currentPiece;
-	TetrisPiece nextPiece;
-	TetrisScore scoreBoard;
-	sf::RenderWindow App;
-	float timePerMove;
-	bool running;
+  void renderNextBlock();
+  void rotateIfPossible();
+  void moveIfPossible(Point direction);
+
+  void drop();
+  void fallAllTheWay();
 	
-	void displayNextBlock();
-	void rotateIfPossible();
-	void moveIfPossible(Point direction);
-	void drop();
-	void fallAllTheWay();
-	
-	void testLose();
+  void testLose();
 	
 public:
 	
-	void initGame();
-	void closeGame();
-	int gameLoop();
+  void initGame();
+  void closeGame();
+  int gameLoop();
 	
 };
 #endif

@@ -17,16 +17,12 @@
  * tetris piece in the sequence.
  */
 class DisplayBlock {
-private:
   int width;
   int height;
   Point position;
 
-  static sf::Shape rectangle;
+  sf::Shape rectangle();
 public:
-
-  void loadAssets();
-	
   //accessors
   void setWidth(int newWidth) { width = newWidth; }
   int getWidth() { return width; }

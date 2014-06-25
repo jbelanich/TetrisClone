@@ -8,10 +8,9 @@
 
 #include "DisplayBlock.h"
 
-sf::Shape DisplayBlock::rectangle;
 
-void DisplayBlock::loadAssets() {
-  rectangle = sf::Shape::Rectangle(position.getX() * TetrisBlock::BLOCK_SIZE,
+sf::Shape DisplayBlock::rectangle() {
+  return sf::Shape::Rectangle(position.getX() * TetrisBlock::BLOCK_SIZE,
 					     position.getY() * TetrisBlock::BLOCK_SIZE,
 					     position.getX() * TetrisBlock::BLOCK_SIZE + width * TetrisBlock::BLOCK_SIZE,
 					     position.getY() * TetrisBlock::BLOCK_SIZE + height * TetrisBlock::BLOCK_SIZE,
@@ -28,7 +27,7 @@ void DisplayBlock::render(sf::RenderWindow & window, TetrisPiece piece) {
 
   piece.setPosition(pos);
 
-  window.Draw(rectangle);
+  window.Draw(rectangle());
   piece.render(window);
 }
 
@@ -36,5 +35,5 @@ void DisplayBlock::render(sf::RenderWindow & window, TetrisPiece piece) {
  * Displays this display block alone at its position.
  */
 void DisplayBlock::render(sf::RenderWindow & window) {
-  window.Draw(rectangle);
+  window.Draw(rectangle());
 }

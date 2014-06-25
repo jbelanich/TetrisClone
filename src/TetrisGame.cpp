@@ -9,15 +9,15 @@
 #include "TetrisGame.h"
 
 /**
- *	Initializes the game by loading the appropriate
- *	images and Tetris Pieces.
+ * Initializes the game by loading the appropriate
+ * images and Tetris Pieces.
  */
 void TetrisGame::initGame() {
   srand(time(NULL));
 	
   TetrisGrid::loadAssets();
   TetrisBlock::loadAssets();
-	
+
   Point startPoint(5,0);
   currentPiece = TetrisPiece::randomPiece();
   currentPiece.setPosition(startPoint);
@@ -26,14 +26,13 @@ void TetrisGame::initGame() {
 	
   running = true;
 	
-  Point boardPosition(400,400);
-  scoreBoard.setPosition(boardPosition);
+  scoreBoard.setPosition(Point(400,400));
 }
 
 /**
- *	Closes the game.  Displays a Game Over Message
- *	onto the screen and the score.  Waits for the user
- *	to exit the game.
+ * Closes the game.  Displays a Game Over Message
+ * onto the screen and the score.  Waits for the user
+ * to exit the game.
  */
 void TetrisGame::closeGame() {
   sf::Font GameOverFont;
@@ -68,9 +67,9 @@ void TetrisGame::closeGame() {
 }
 
 /**
- *	Rotates the Tetris Piece if possible.  A Tetris Piece
- *	cannot rotate if it will result in a collision while
- *	doing so.
+ * Rotates the Tetris Piece if possible.  A Tetris Piece
+ * cannot rotate if it will result in a collision while
+ * doing so.
  */
 void TetrisGame::rotateIfPossible() {
   currentPiece.rotatePiece();
@@ -79,8 +78,8 @@ void TetrisGame::rotateIfPossible() {
 }
 
 /**
- *	Moves the Tetris Piece in the given direciton if possible.  A Tetris Piece
- *	cannot move if moving it will result in a collision.
+ * Moves the Tetris Piece in the given direciton if possible.  A Tetris Piece
+ * cannot move if moving it will result in a collision.
  */
 void TetrisGame::moveIfPossible(Point direction) {
   currentPiece.move(direction);
@@ -90,11 +89,11 @@ void TetrisGame::moveIfPossible(Point direction) {
 }
 
 /**
- *	This method drops the Tetris Piece by one grid location.  After
- *	dropping down, the method checks if there is a collision.  If so,
- *	it will destroy this piece and add its blocks onto the grid.  It
- *	will also check if there are any full rows, and will start a new
- *	dropping piece.
+ * Drops the Tetris Piece by one grid location.  After
+ * dropping down, the method checks if there is a collision.  If so,
+ * it will destroy this piece and add its blocks onto the grid.  It
+ * will also check if there are any full rows, and will start a new
+ * dropping piece.
  */
 void TetrisGame::drop() {
   Point down(0,1);
@@ -120,8 +119,8 @@ void TetrisGame::drop() {
 }
 
 /**
- *	Causes the block to drop down to the lowest possible
- *	position.
+ * Causes the block to drop down to the lowest possible
+ * position.
  */
 void TetrisGame::fallAllTheWay() {
   Point down(0,1);
@@ -136,8 +135,8 @@ void TetrisGame::fallAllTheWay() {
 }
 
 /**
- *	Test is the user has lost.  This happens when
- *	a block spawns and it immediately has a collision.
+ * Test is the user has lost.  This happens when
+ * a block spawns and it immediately has a collision.
  */
 void TetrisGame::testLose() {
   if(grid.hasCollision(currentPiece)) {
@@ -148,7 +147,7 @@ void TetrisGame::testLose() {
 /**
  *	Displays the next block to the right of the Tetris Grid.
  */
-void TetrisGame::displayNextBlock() {
+void TetrisGame::renderNextBlock() {
   Point displayPosition(TetrisGrid::WIDTH + 1, 0);
   DisplayBlock nextPieceSpace;
   nextPieceSpace.setWidth(8);
@@ -158,9 +157,9 @@ void TetrisGame::displayNextBlock() {
 }
 
 /**
- *	The game loop.  It waits for user interaction in moving the
- *	block.  At a given time interval, the game will drop the 
- *	Tetris Piece down.  This gets faseter as move rows are cleared.
+ * The game loop.  It waits for user interaction in moving the
+ * block.  At a given time interval, the game will drop the 
+ * Tetris Piece down.  This gets faseter as move rows are cleared.
  */
 int TetrisGame::gameLoop() {
 
@@ -208,7 +207,7 @@ int TetrisGame::gameLoop() {
 			
       App.Clear();
 			
-      displayNextBlock();
+      renderNextBlock();
       grid.render(App);
       currentPiece.render(App);
       scoreBoard.render(App);
