@@ -9,31 +9,16 @@
 
 #include "TetrisGrid.h"
 
+sf::Image TetrisGrid::image;
+sf::Shape TetrisGrid::background;
+
 void TetrisGrid::loadAssets() {
   image.LoadFromFile("images/gridImage.png");
-}
 
-
-sf::Image TetrisGrid::image;
-
-/**
- *	Adds a block onto the grid.
- */
-void TetrisGrid::addBlock(TetrisBlock block) {
-  if(inBounds(block.getPosition()))
-    blocks.push_back(block);
-}
-
-/**
- *	Checks if the TetrisGrid has a block at the
- *	specified location.
- */
-bool TetrisGrid::hasBlock(Point location) {
-  for(int i = 0; i<blocks.size(); i++) {
-    if(location.equals(blocks[i].getPosition()))
-      return true;
-  }
-  return false;
+  background = sf::Shape::Rectangle(0.0f, 0.0f, (float)WIDTH * TetrisBlock::BLOCK_SIZE,
+					(float)HEIGHT * TetrisBlock::BLOCK_SIZE, 
+					sf::Color(88,83,83), 0.0f, 
+					sf::Color(88,83,83));
 }
 
 /**
@@ -43,52 +28,15 @@ bool TetrisGrid::hasBlock(Point location) {
  *	blocks in the grid.
  */
 bool TetrisGrid::hasCollision(Piece piece) {
-  vector <Point> pieceGridLocations = piece.getGridLocations();
-  for(int i = 0; i < pieceGridLocations.size(); i++) {
-    Point temp = pieceGridLocations[i];
-    if(hasBlock(temp) || !inBounds(temp))
-      return true;
-  }
-  return false;
-}
-
-/**
- *	Returns true is the given point is in the boundaries
- *	of the Tetris Grid.
- */
-bool TetrisGrid::inBounds(Point point) {
-  return ((point.getX() < WIDTH) 
-	  && (point.getY() < HEIGHT) 
-	  && (point.getX() >= 0));
+  return piece.hasCollisionWithBlocks(blocks) || !piece.inBounds(WIDTH,HEIGHT);
 }
 
 /**
  *	Adds all of the blocks from the given piece
  *	into the grid.
  */
-void TetrisGrid::addBlocks(Piece piece) {
-  vector <TetrisBlock> gridBlocks = piece.getGridBlocks();
-  for(int i = 0; i < gridBlocks.size(); i++) {
-    addBlock(gridBlocks[i]);
-  }
-}
-
-/**
- *	Renders a single block from the grid onto the screen.
- */
-void TetrisGrid::renderBlock(sf::RenderWindow & window, TetrisBlock block) {
-  block.render(window);
-}
-
-/**
- *	Renders the background of the grid onto the screen.
- */
-void TetrisGrid::renderBackground(sf::RenderWindow & window) {
-  sf::Shape rect = sf::Shape::Rectangle(0.0f, 0.0f, (float)WIDTH * TetrisBlock::BLOCK_SIZE,
-					(float)HEIGHT * TetrisBlock::BLOCK_SIZE, 
-					sf::Color(88,83,83), 0.0f, 
-					sf::Color(88,83,83));
-  window.Draw(rect);
+void TetrisGrid::addBlocksForPiece(Piece piece) {
+  piece.addSelfToBlocks(blocks);
 }
 
 /**
@@ -96,10 +44,10 @@ void TetrisGrid::renderBackground(sf::RenderWindow & window) {
  *	the background then renders each individual block.
  */
 void TetrisGrid::render(sf::RenderWindow & window) {
-  renderBackground(window);
+  window.Draw(background);
   vector<TetrisBlock>::iterator iter;
   for(iter = blocks.begin(); iter != blocks.end(); ++iter) {
-    renderBlock(window, *iter);
+    iter->render(window);
   }
 }
 
@@ -125,6 +73,8 @@ int TetrisGrid::removeFullRows() {
     rowCounts[blockIter->getPosition().getY()]++;
   }
 	
+  //figure out how many rows need to be removed, and calculate
+  //drop counts.
   map<int,int>::reverse_iterator rIter;
   for(rIter = rowCounts.rbegin(); rIter != rowCounts.rend(); ++rIter) {
     //if all slots in the row are filled...

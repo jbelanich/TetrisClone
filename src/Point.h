@@ -22,6 +22,10 @@ public:
   int getY() const;
   void setX(int newX);
   void setY(int newY);
+
+  //comparison operators
+  bool operator==(const Point& other) const;
+  bool operator<(const Point& other) const;
   
   //transformation methods
   Point transform(int a, int b, int c, int d) const;

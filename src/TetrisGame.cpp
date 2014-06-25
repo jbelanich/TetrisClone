@@ -13,21 +13,21 @@
  *	images and Tetris Pieces.
  */
 void TetrisGame::initGame() {
-	srand(time(NULL));
+  srand(time(NULL));
 	
-	TetrisGrid::loadAssets();
-	TetrisBlock::loadAssets();
+  TetrisGrid::loadAssets();
+  TetrisBlock::loadAssets();
 	
-	Point startPoint(5,0);
-	currentPiece = Piece::randomPiece();
-	currentPiece.setPosition(startPoint);
-	nextPiece = Piece::randomPiece();
-	nextPiece.setPosition(startPoint);
+  Point startPoint(5,0);
+  currentPiece = Piece::randomPiece();
+  currentPiece.setPosition(startPoint);
+  nextPiece = Piece::randomPiece();
+  nextPiece.setPosition(startPoint);
 	
-	running = true;
+  running = true;
 	
-	Point boardPosition(400,400);
-	scoreBoard.setPosition(boardPosition);
+  Point boardPosition(400,400);
+  scoreBoard.setPosition(boardPosition);
 }
 
 /**
@@ -36,31 +36,34 @@ void TetrisGame::initGame() {
  *	to exit the game.
  */
 void TetrisGame::closeGame() {
-	sf::Font GameOverFont;
-	if(!GameOverFont.LoadFromFile("images/Arial.ttf", 50))
-		std::cout << "Error Loading Font";
-	sf::String GameOverMessage("Game Over!", GameOverFont, 30);
-	GameOverMessage.Move(TetrisGrid::WIDTH/2, TetrisGrid::HEIGHT/2);
+  sf::Font GameOverFont;
+
+  if(!GameOverFont.LoadFromFile("images/Arial.ttf", 50))
+    std::cout << "Error Loading Font";
+
+  sf::String GameOverMessage("Game Over!", GameOverFont, 30);
+
+  GameOverMessage.Move(TetrisGrid::WIDTH/2, TetrisGrid::HEIGHT/2);
 	
-	while(App.IsOpened()) {
-		sf::Event Event; 
+  while(App.IsOpened()) {
+    sf::Event Event; 
 		
-		while (App.GetEvent(Event))
-		{
+    while (App.GetEvent(Event))
+      {
 		
-			if (Event.Type == sf::Event::Closed)
-				App.Close();
-		}
+	if (Event.Type == sf::Event::Closed)
+	  App.Close();
+      }
 			
-		App.Clear();
+    App.Clear();
 			
-		grid.render(App);
-		currentPiece.render(App);
-		App.Draw(GameOverMessage);
-		scoreBoard.render(App);
+    grid.render(App);
+    currentPiece.render(App);
+    App.Draw(GameOverMessage);
+    scoreBoard.render(App);
 			
-		App.Display();
-	}
+    App.Display();
+  }
 	
 }
 
@@ -70,9 +73,9 @@ void TetrisGame::closeGame() {
  *	doing so.
  */
 void TetrisGame::rotateIfPossible() {
-	currentPiece.rotatePiece();
-	if(grid.hasCollision(currentPiece))
-		currentPiece.reverseRotatePiece();
+  currentPiece.rotatePiece();
+  if(grid.hasCollision(currentPiece))
+    currentPiece.reverseRotatePiece();
 }
 
 /**
@@ -80,10 +83,10 @@ void TetrisGame::rotateIfPossible() {
  *	cannot move if moving it will result in a collision.
  */
 void TetrisGame::moveIfPossible(Point direction) {
-	currentPiece.move(direction);
-	if(grid.hasCollision(currentPiece)) {
-		currentPiece.setPosition(currentPiece.getPosition().minus(direction));
-	}
+  currentPiece.move(direction);
+  if(grid.hasCollision(currentPiece)) {
+    currentPiece.setPosition(currentPiece.getPosition().minus(direction));
+  }
 }
 
 /**
@@ -94,26 +97,26 @@ void TetrisGame::moveIfPossible(Point direction) {
  *	dropping piece.
  */
 void TetrisGame::drop() {
-	Point down(0,1);
+  Point down(0,1);
 	
-	currentPiece.move(down);
+  currentPiece.move(down);
 	
-	if(grid.hasCollision(currentPiece)) {
-		currentPiece.setPosition(currentPiece.getPosition().minus(down));
+  if(grid.hasCollision(currentPiece)) {
+    currentPiece.setPosition(currentPiece.getPosition().minus(down));
 		
-		Point startPosition(5,0);
+    Point startPosition(5,0);
 		
-		grid.addBlocks(currentPiece);
+    grid.addBlocksForPiece(currentPiece);
 		
-		currentPiece = nextPiece;
-		currentPiece.setPosition(startPosition);
+    currentPiece = nextPiece;
+    currentPiece.setPosition(startPosition);
 		
-		nextPiece = Piece::randomPiece();
-		nextPiece.setPosition(startPosition);
+    nextPiece = Piece::randomPiece();
+    nextPiece.setPosition(startPosition);
 		
-		scoreBoard.addScoreForRows(grid.removeFullRows());
-		testLose();
-	}
+    scoreBoard.addScoreForRows(grid.removeFullRows());
+    testLose();
+  }
 }
 
 /**
@@ -121,15 +124,15 @@ void TetrisGame::drop() {
  *	position.
  */
 void TetrisGame::fallAllTheWay() {
-	Point down(0,1);
-	Point up(0,-1);
+  Point down(0,1);
+  Point up(0,-1);
 	
-	while(!grid.hasCollision(currentPiece)) {
-		currentPiece.move(down);
-	}
+  while(!grid.hasCollision(currentPiece)) {
+    currentPiece.move(down);
+  }
 	
-	currentPiece.move(up);
-	drop();
+  currentPiece.move(up);
+  drop();
 }
 
 /**
@@ -137,21 +140,21 @@ void TetrisGame::fallAllTheWay() {
  *	a block spawns and it immediately has a collision.
  */
 void TetrisGame::testLose() {
-	if(grid.hasCollision(currentPiece)) {
-		running = false;
-	}
+  if(grid.hasCollision(currentPiece)) {
+    running = false;
+  }
 }
 
 /**
  *	Displays the next block to the right of the Tetris Grid.
  */
 void TetrisGame::displayNextBlock() {
-	Point displayPosition(TetrisGrid::WIDTH + 1, 0);
-	DisplayBlock nextPieceSpace;
-	nextPieceSpace.setWidth(8);
-	nextPieceSpace.setHeight(5);
-	nextPieceSpace.setPosition(displayPosition);
-	nextPieceSpace.render(App, nextPiece);
+  Point displayPosition(TetrisGrid::WIDTH + 1, 0);
+  DisplayBlock nextPieceSpace;
+  nextPieceSpace.setWidth(8);
+  nextPieceSpace.setHeight(5);
+  nextPieceSpace.setPosition(displayPosition);
+  nextPieceSpace.render(App, nextPiece);
 }
 
 /**
@@ -161,58 +164,58 @@ void TetrisGame::displayNextBlock() {
  */
 int TetrisGame::gameLoop() {
 
-	App.Create(sf::VideoMode(380,400), "SFML Graphics");
+  App.Create(sf::VideoMode(380,400), "SFML Graphics");
 	
-	initGame(); 
-	float timeElapsed = 0.0f;
-	float timeCounter = 0.0f;
+  initGame(); 
+  float timeElapsed = 0.0f;
+  float timeCounter = 0.0f;
 	
-	Point right(1,0);
-	Point down(0,1);
-	Point up(0,-1);
-	Point left(-1,0);
+  Point right(1,0);
+  Point down(0,1);
+  Point up(0,-1);
+  Point left(-1,0);
 		
 		
-		while (running && App.IsOpened())
-		{
-			timeElapsed = App.GetFrameTime();
-			timeCounter += timeElapsed;
+  while (running && App.IsOpened())
+    {
+      timeElapsed = App.GetFrameTime();
+      timeCounter += timeElapsed;
 			
-			sf::Event Event;
+      sf::Event Event;
 
-			while (App.GetEvent(Event))
-			{
-				if (Event.Type == sf::Event::Closed)
-					App.Close();
-				if((Event.Type == sf::Event::KeyPressed)) {
-					if(Event.Key.Code == sf::Key::Up)
-						rotateIfPossible();
-					if(Event.Key.Code == sf::Key::Right)
-						moveIfPossible(right);
-					if(Event.Key.Code == sf::Key::Left)
-						moveIfPossible(left);
-					if(Event.Key.Code == sf::Key::Down)
-						drop();
-					if(Event.Key.Code == sf::Key::Space)
-						fallAllTheWay();
-				}
-			}
+      while (App.GetEvent(Event))
+	{
+	  if (Event.Type == sf::Event::Closed)
+	    App.Close();
+	  if((Event.Type == sf::Event::KeyPressed)) {
+	    if(Event.Key.Code == sf::Key::Up)
+	      rotateIfPossible();
+	    if(Event.Key.Code == sf::Key::Right)
+	      moveIfPossible(right);
+	    if(Event.Key.Code == sf::Key::Left)
+	      moveIfPossible(left);
+	    if(Event.Key.Code == sf::Key::Down)
+	      drop();
+	    if(Event.Key.Code == sf::Key::Space)
+	      fallAllTheWay();
+	  }
+	}
 			
-			if(timeCounter > scoreBoard.getTimePerMove()) {
-				timeCounter = 0.0f;
-				drop();
-			}
+      if(timeCounter > scoreBoard.getTimePerMove()) {
+	timeCounter = 0.0f;
+	drop();
+      }
 			
-			App.Clear();
+      App.Clear();
 			
-			displayNextBlock();
-			grid.render(App);
-			currentPiece.render(App);
-			scoreBoard.render(App);
+      displayNextBlock();
+      grid.render(App);
+      currentPiece.render(App);
+      scoreBoard.render(App);
 			
-			App.Display();
-		}
+      App.Display();
+    }
 		
-		return EXIT_SUCCESS;
+  return EXIT_SUCCESS;
 }
 

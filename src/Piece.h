@@ -17,9 +17,15 @@
 
 using namespace std;
 
+enum Direction {
+  CLOCKWISE,COUNTER_CLOCKWISE
+};
+
 /**
  * A TetrisPiece is a collection of TetrisBlocks arranged in the appropriate pattern. Internally,
  * this is represented by a vector of Positions indicating where the relevant blocks are located.
+ * When we need to add the piece to the TetrisGrid, we turn this list of positions into a list
+ * of TetrisBlocks of the proper color.
  * 
  * Note that for every TetrisPiece there is an *implicit block* at point (0,0).
  */
@@ -45,10 +51,11 @@ class Piece {
 
   //Internal utilities
   void renderBlock(sf::RenderWindow & window, Point blockLocation);
-  void rotate(int direction);
+  void rotate(Direction direction);
   bool hasBlockAtLocation(Point location);
   Point getGridLocation(Point blockLocation);
   void addBlock(Point location);
+  bool inBounds(Point p, int width, int height);
 	
 public:
   Piece();
@@ -63,14 +70,15 @@ public:
   static Piece threeBlock();
   static Piece randomPiece();
   
-  //coordinate translations.
-  vector <TetrisBlock> getGridBlocks();
-  vector <Point> getGridLocations();
-
   //transformations
   void rotatePiece();
   void reverseRotatePiece();
   void move(Point direction);
+
+  //interaction with grid
+  bool inBounds(int width, int height);
+  void addSelfToBlocks(vector<TetrisBlock>& blocks);
+  bool hasCollisionWithBlocks(const vector<TetrisBlock>& blocks);
 
   //rendering
   void render(sf::RenderWindow & window);

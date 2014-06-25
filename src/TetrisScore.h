@@ -14,29 +14,29 @@
 #include "DisplayBlock.h"
 
 class TetrisScore {
-private:
-	int totalScore;
-	int totalLines;
-	int level;
-	int rowsTowardLevel;
-	Point position;
-	static const int SCORE_FACTOR = 100;
+  int totalScore;
+  int totalLines;
+  int level;
+  int rowsTowardLevel;
+  Point position;
+
+  static const int SCORE_FACTOR = 100;
 public:
-	TetrisScore();
+  TetrisScore();
 	
 	
-	int getTotalScore() { return totalScore; }
-	void setTotalScore(int newTotalScore) { totalScore = newTotalScore; }
-	Point getPosition() { return position; }
-	void setPosition(Point newPosition) { position = newPosition; }
-	int getTotalLines() { return totalLines; }
-	void setTotalLines(int newTotalLines) { totalLines = newTotalLines; }
+  int getTotalScore() { return totalScore; }
+  void setTotalScore(int newTotalScore) { totalScore = newTotalScore; }
+  Point getPosition() { return position; }
+  void setPosition(Point newPosition) { position = newPosition; }
+  int getTotalLines() { return totalLines; }
+  void setTotalLines(int newTotalLines) { totalLines = newTotalLines; }
 	
-	void addScoreForRows(int numberOfRows);
+  void addScoreForRows(int numberOfRows);
 	
-	void render(sf::RenderWindow & window);
+  void render(sf::RenderWindow & window);
 	
-	float getTimePerMove();
+  float getTimePerMove();
 
 };
 #endif

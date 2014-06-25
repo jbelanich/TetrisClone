@@ -16,7 +16,7 @@ Piece::Piece() : currentState(0) {
 }
 
 /**
- *	Generates a square block and returns it.
+ * Generates a square block and returns it.
  */
 Piece Piece::square() {
   Piece returnPiece;
@@ -28,7 +28,7 @@ Piece Piece::square() {
 }
 
 /**
- *	Generates an L-Block that points to the right and returns it.
+ * Generates an L-Block that points to the right and returns it.
  */
 Piece Piece::lblockRight() {
   Piece returnPiece;
@@ -40,7 +40,7 @@ Piece Piece::lblockRight() {
 }
 
 /**
- *	Generates an L-Block that points to the left and returns it.
+ * Generates an L-Block that points to the left and returns it.
  */
 Piece Piece::lblockLeft() {
   Piece returnPiece;
@@ -52,7 +52,7 @@ Piece Piece::lblockLeft() {
 }
 
 /**
- *	Generates a stair block that points to the right and returns it.
+ * Generates a stair block that points to the right and returns it.
  */
 Piece Piece::stairblockRight() {
   Piece returnPiece;
@@ -64,7 +64,7 @@ Piece Piece::stairblockRight() {
 }
 
 /**
- *	Generates a stair block that points to the left and returns it.
+ * Generates a stair block that points to the left and returns it.
  */
 Piece Piece::stairblockLeft() {
   Piece returnPiece;
@@ -76,7 +76,7 @@ Piece Piece::stairblockLeft() {
 }
 
 /**
- *	Generates a long block and returns it.
+ * Generates a long block and returns it.
  */
 Piece Piece::longBlock() {
   Piece returnPiece;
@@ -89,7 +89,7 @@ Piece Piece::longBlock() {
 }
 
 /**
- *	Generates a three block and returns it.
+ * Generates a three block and returns it.
  */
 Piece Piece::threeBlock() {
   Piece returnPiece;
@@ -101,41 +101,40 @@ Piece Piece::threeBlock() {
 }
 
 /**
- *	Returns a random piece.
+ * Returns a random piece.
  */
 Piece Piece::randomPiece() {
-  Piece returnPiece;
   int pieceRef = rand() % 7;
   switch (pieceRef) {
   case 0:
-    returnPiece = threeBlock();
+    return threeBlock();
     break;
   case 1:
-    returnPiece = longBlock();
+    return longBlock();
     break;
   case 2:
-    returnPiece = stairblockLeft();
+    return stairblockLeft();
     break;
   case 3:
-    returnPiece = stairblockRight();
+    return stairblockRight();
     break;
   case 4:
-    returnPiece = lblockLeft();
+    return lblockLeft();
     break;
   case 5:
-    returnPiece = lblockRight();
+    return lblockRight();
     break;
   case 6:
-    returnPiece = square();
+    return square();
     break;
   default:
-    break;
+    return longBlock();
   }
-  return returnPiece;
 }
 
 /**
- *	Add a block at the specified location.
+ * Add a block at the specified location. Used for constructing
+ * the block shapes.
  */
 void Piece::addBlock(Point location) {
   if(!hasBlockAtLocation(location))
@@ -143,15 +142,13 @@ void Piece::addBlock(Point location) {
 }
 
 /**
- *	Rotate the piece in a certain direction.
- *	1 - Means rotate clockwise
- *	Any other number means counter-clockwise
+ * Rotate the piece in the provided direction.
  */
-void Piece::rotate(int direction) {
+void Piece::rotate(Direction direction) {
   vector<Point> newPositions;
   vector<Point>::iterator iter;
   for(iter = blockLocations.begin(); iter != blockLocations.end(); ++iter) {
-    if(direction == 1)
+    if(direction == CLOCKWISE)
       newPositions.push_back(iter->rotateClockwise());
     else 
       newPositions.push_back(iter->rotateCounterClockwise());
@@ -172,11 +169,11 @@ void Piece::rotatePiece() {
 
     //rotate all the way back to original position.
     for(int i = 0; i < rotationStates-1; i++) {
-      rotate(0);
+      rotate(COUNTER_CLOCKWISE);
     }
   } else {
     //just rotate normally
-    rotate(1);
+    rotate(CLOCKWISE);
   }
 }
 
@@ -192,16 +189,16 @@ void Piece::reverseRotatePiece() {
 
     //rotate all the way to original position.
     for(int i = 0; i < rotationStates-1; i++) {
-      rotate(1);
+      rotate(CLOCKWISE);
     }
   } else {
     //just rotate normally
-    rotate(0);
+    rotate(COUNTER_CLOCKWISE);
   }
 }
 
 /**
- *	Returns true if the piece has a block at the specified location.
+ * Returns true if the piece has a block at the specified location.
  */
 bool Piece::hasBlockAtLocation(Point location) {
   for(int i = 0; i<blockLocations.size(); i++) {
@@ -212,78 +209,106 @@ bool Piece::hasBlockAtLocation(Point location) {
 }
 
 /**
- *	Moves the piece in the specified direction.
+ * Checks if we have a collision with the provided list of blocks.
+ */
+bool Piece::hasCollisionWithBlocks(const vector<TetrisBlock>& blocks) {
+  vector<TetrisBlock>::const_iterator blockIter;
+  for(blockIter = blocks.begin(); blockIter != blocks.end(); ++blockIter) {
+    //check collision with internal grid locations
+    vector<Point>::iterator blockLocationIter;
+    for(blockLocationIter = blockLocations.begin(); blockLocationIter != blockLocations.end(); ++blockLocationIter) {
+      if(getGridLocation(*blockLocationIter) == blockIter->getPosition()) {
+	return true;
+      }
+    }
+
+    //check our implicit block
+    if(position == blockIter->getPosition()) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
+/**
+ * Adds our internal blocks to the provided list of blocks.
+ */
+void Piece::addSelfToBlocks(vector<TetrisBlock>& blocks) {
+  vector<Point>::iterator locationIter;
+  for(locationIter = blockLocations.begin(); locationIter != blockLocations.end(); ++locationIter) {
+    TetrisBlock tempBlock;
+    tempBlock.setPosition(getGridLocation(*locationIter));
+    tempBlock.setColor(color);
+    blocks.push_back(tempBlock);
+  }
+	
+  //add implicit center piece.
+  TetrisBlock centerPiece;
+  centerPiece.setPosition(position);
+  centerPiece.setColor(color);
+  blocks.push_back(centerPiece);
+}
+
+/**
+ * Checks if the piece is within the provided bounds.
+ */
+bool Piece::inBounds(int width, int height) {
+  vector<Point>::iterator locationIter;
+  for(locationIter = blockLocations.begin(); locationIter != blockLocations.end(); ++locationIter) {
+    Point gridLocation = getGridLocation(*locationIter);
+    if(!inBounds(gridLocation, width, height)) {
+      return false;
+    }
+  }
+  
+  //check implicit point
+  return inBounds(position, width, height);
+}
+
+/**
+ * Checks if provided point is within the provided bounds.
+ */
+bool Piece::inBounds(Point p, int width, int height) {
+  return (p.getX() < width) && (p.getY() < height)
+    && (p.getX() >= 0);
+}
+
+/**
+ * Moves the piece in the specified direction.
  */
 void Piece::move(Point direction) {
   position = position.add(direction);
 }
 
 /**
- *	Returns the grid locations of the blocks in this piece.
- *	Internally, the block positions are stored relative to
- *	the position of the tetris piece.  This allows for an
- *	easier rotation method.  However, when rendered we need
- *	the position of these blocks on the grid.
- */
-vector <Point> Piece::getGridLocations() {
-  vector <Point> gridLocations;
-  for(int i = 0; i < blockLocations.size(); i++) {
-    gridLocations.push_back(getGridLocation(blockLocations[i]));
-  }
-  gridLocations.push_back(position);
-  return gridLocations;
-}
-
-/**
- *	Returns the grid location for a specific relative location.
+ * Returns the grid location for a specific relative location.
  */
 Point Piece::getGridLocation(Point blockLocation) {
   return blockLocation.add(position);
 }
 
 /**
- *	Renders this piece onto the passed RenderWindow.
- *	It renders each block in its specific grid location.
+ * Renders this piece onto the passed RenderWindow.
+ * It renders each block in its specific grid location.
  */
 void Piece::render(sf::RenderWindow & window) {
   for(int i = 0; i < blockLocations.size(); i++) {
     renderBlock(window, blockLocations[i]);
   }
 
+  //render implicit block
   renderBlock(window, Point::zero());
 }
 
 /**
- *	Renders a block at a specific relative location.
- *	It first converts the passed location into a grid
- *	location.
+ * Renders a block at a specific relative location.
+ * It first converts the passed location into a grid
+ * location.
  */
 void Piece::renderBlock(sf::RenderWindow& window, Point blockLocation) {
   TetrisBlock block;
   block.setPosition(getGridLocation(blockLocation));
   block.setColor(color);
   block.render(window);
-}
-
-/**
- *	Returns the blocks of this Tetris piece and sets all
- *	of their positions to their grid positions instead of
- *	their relative positions.  This is used for adding the
- *	blocks into the grid.
- */
-vector<TetrisBlock> Piece::getGridBlocks() {
-  vector <TetrisBlock> returnBlocks;
-  for(int i = 0; i < blockLocations.size(); i++) {
-    TetrisBlock tempBlock;
-    tempBlock.setPosition(getGridLocation(blockLocations[i]));
-    tempBlock.setColor(color);
-    returnBlocks.push_back(tempBlock);
-  }
-	
-  TetrisBlock centerPiece;
-  centerPiece.setPosition(getPosition());
-  centerPiece.setColor(color);
-  returnBlocks.push_back(centerPiece);
-	
-  return returnBlocks;
 }

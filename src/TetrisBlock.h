@@ -33,8 +33,8 @@ public:
   void render(sf::RenderWindow & App);
   
   void setPosition(Point newPosition) { position = newPosition; }
-  Point getPosition() { return position; }
+  Point getPosition() const { return position; }
   void setColor(Color newColor) { color = newColor; }
-  Color getColor() { return color; }
+  Color getColor() const { return color; }
 };
 #endif

@@ -78,3 +78,18 @@ void Point::setY(int newY) {
 Point Point::zero() {
   return Point(0,0);
 }
+
+
+bool Point::operator==(const Point& other) const {
+  return equals(other);
+}
+
+bool Point::operator<(const Point& other) const {
+  if(x < other.x) {
+    return true;
+  } else if(x == other.x) {
+    return y < other.y;
+  } else {
+    return false;
+  }
+}
